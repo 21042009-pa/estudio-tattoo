@@ -174,9 +174,17 @@ app.delete('/projetos/:id', async (req,res) => {
 })
 
 app.get('/sessoes', async (req, res) =>{
-    const [lista] = await db.query('SELECT sessoes.*, projeto_id, clientes.nome AS cliente_nome FROM sessoes JOIN projetos ON projetos.id = sessoes.projeto_id JOIN clientes ON clientes.id = clientes_id ORDER BY sessoes.data_sessoes')
+    const [lista] = await db.query(`
+    SELECT sessoes.*, projetos.tamanho, projetos.lugar, clientes.nome AS cliente_nome
+    FROM sessoes
+    JOIN projetos ON projetos.id = sessoes.projeto_id
+    JOIN clientes ON clientes.id = projetos.cliente_id
+    ORDER BY sessoes.data_sessoes`)
 
-    const [projetos] = await db.query ('SELECT * FROM projetos')
+    const [projetos] = await db.query(`
+    SELECT projetos.*, clientes.nome AS cliente_nome
+    FROM projetos
+    JOIN clientes ON clientes.id = projetos.cliente_id`)
     const sessoes = lista.map((a) => ({
         ...a,
         data_br: new Date(a.data_sessoes).toLocaleString('pt-br'),
@@ -186,8 +194,8 @@ app.get('/sessoes', async (req, res) =>{
 })
 
 app.post('/sessoes', async (req, res) => {
-    const {projeto_id, data_sessoes, cliente_id} = req.body
-    await db.query('INSERT INTO sessoes (cliente_id, data_sessoes, projeto_id) VALUES (?,?,?)', [cliente_id, data_sessoes.replace('T', ' '), projeto_id])
+    const {projeto_id, data_sessoes} = req.body
+await db.query('INSERT INTO sessoes (projeto_id, data_sessoes) VALUES (?,?)', [projeto_id, data_sessoes.replace('T', ' ')])
     res.redirect('/sessoes')
 })
 

@@ -16,12 +16,13 @@
             <th>projeto</th>
             <th>Cliente</th>
             <th>Alterar data</th>
+            <th></th>
 
         </tr>
-        {{#agendamentos}}
+        {{#sessoes}}
         <tr>
             <td>{{data_br}}</td>
-            <td>{{projeto_id}}</td>
+            <td>#{{projeto_id}} - {{tamanho}}, {{lugar}}</td>
             <td>{{Cliente_nome}}</td>
             <td>
                 <form method="POST" action="/sessoes/{{id}}">
@@ -45,11 +46,10 @@
         <select name="projeto_id" required>
             <option value="">Selecione o projeto</option>
             {{#projetos}}
-            <option value="{{id}}">{{projeto}} - {{cliente}}</option>
+            <option value="{{id}}">#{{id}} - {{tamanho}}, {{lugar}} ({{cliente_nome}})</option>
             {{/projetos}}
         </select>
         <input type="datetime-local" name="data_sessoes" required/>
-        <input type="text" name="projeto" placeholder="projeto"/>
         <button>Cadastrar</button>
     </form>
 </body>
