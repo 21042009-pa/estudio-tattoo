@@ -51,3 +51,5 @@ INSERT INTO sessoes (projeto_id, data_sessoes) VALUES
 (1, '2026-11-05 09:00:00'),
 (2, '2026-10-20 14:30:00'),
 (3, '2026-10-28 08:00:00');
+
+ALTER TABLE projetos RENAME COLUMN cliete_id TO cliente_id;

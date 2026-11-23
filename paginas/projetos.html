@@ -22,7 +22,7 @@
             <td>{{tamanho}}</td>
             <td>{{cor}}</td>
             <td>{{lugar}}</td>
-            <td>{{cliente_id}}</td>
+            <td>{{cliente_nome}}</td>
             <td>
              <a href="/projetos?editar={{id}}">Editar</a>
              <form method="POST" action="/projetos/{{id}}">
@@ -33,11 +33,9 @@
         </tr>
         {{/projetos}}
     </table>
-    <h2>{{#projetos}}Editar{{/projetos}}{{^projetos}}Cadastrar{{/projetos]}} projetos</h2>
+    <h2>{{#editando}}Editar{{/editando}}{{^editando}}Cadastrar{{/editando}} projeto</h2>
     <form method="POST" action="{{acao}}">
-        {{#projetos}}
-        <input type="hidden" name="_method" value="PUT"/>
-        {{/projetos}}
+       {{#editando}}<input type="hidden" name="_method" value="PUT"/>{{/editando}}
         <select name="cliente_id" required>
             <option value="">Selecione o cliente</option>
             {{#clientes}}

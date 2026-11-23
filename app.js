@@ -42,9 +42,13 @@ function criptografar (texto){
 }
 
 function descriptografar (texto){
-    const decifra = crypto.createDecipheriv("aes-256-cbc", process.env.CRIPTO_CHAVE, process.env.CRIPTO_IV,)
-
-    return decifra.update(texto, "hex", "utf8") + decifra.final("utf8")
+    try {
+        const decifra = crypto.createDecipheriv("aes-256-cbc", process.env.CRIPTO_CHAVE, process.env.CRIPTO_IV)
+        return decifra.update(texto, "hex", "utf8") + decifra.final("utf8")
+    } catch (erro) {
+        console.error(`Não foi possível descriptografar o CPF "${texto}":`, erro.message)
+        return "CPF inválido"
+    }
 }
 
 async function excluir(res, tabela, id, volta, motivo) {
@@ -61,7 +65,7 @@ async function excluir(res, tabela, id, volta, motivo) {
 }
 
 async function mostrarProjetos (req, res, erro="") {
-    const [projetos]= await db.query("SELECT * FROM projetos")
+    const [projetos] = await db.query("SELECT projetos.*, clientes.nome AS cliente_nome FROM projetos JOIN clientes ON clientes.id = projetos.cliente_id")
     const [listaClientes]= await db.query("SELECT id, nome FROM clientes")
     const editar = projetos.find((v) => String(v.id) === req.query.editar)
 
