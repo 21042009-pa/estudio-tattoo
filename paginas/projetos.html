@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudio - Projetos</title>
+</head>
+<body>
+    <h1>Projetos</h1>
+    <p><a href="/principal">Voltar</a></p>
+
+    <table border="1">
+        <tr>
+            <th>Tamanho</th>
+            <th>Cor</th>
+            <th>Lugar</th>
+            <th>Cliente</th>
+            <th></th>
+        </tr>
+        {{#projetos}}
+        <tr>
+            <td>{{tamanho}}</td>
+            <td>{{cor}}</td>
+            <td>{{lugar}}</td>
+            <td>{{cliente_id}}</td>
+            <td>
+             <a href="/projetos?editar={{id}}">Editar</a>
+             <form method="POST" action="/projetos/{{id}}">
+                <input type="hidden" name="_method" value="DELETE"/>
+                <button>Excluir</button>
+                </form>
+            </td>
+        </tr>
+        {{/projetos}}
+    </table>
+    <h2>{{#projetos}}Editar{{/projetos}}{{^projetos}}Cadastrar{{/projetos]}} projetos</h2>
+    <form method="POST" action="{{acao}}">
+        {{#projetos}}
+        <input type="hidden" name="_method" value="PUT"/>
+        {{/projetos}}
+        <select name="cliente_id" required>
+            <option value="">Selecione o cliente</option>
+            {{#clientes}}
+            <option value="{{id}}" {{selecionado}}>{{nome}}</option>
+            {{/clientes}}
+        </select>
+        <input type="text" name="tamanho" placeholder="Tamanho" value="{{form.tamanho}}" required> 
+        <input type="text" name="cor" placeholder="Cor" value="{{form.cor}}" >
+        <input type="text" name="lugar" placeholder="Lugar" value="{{form.lugar}}" >
+        <button>{{#editando}}Salvar{{/editando}}{{^editando}}Cadastrar{{/editando}}</button>
+    </form>
+    <p>{{erro}}</p>
+</body>
+</html>
